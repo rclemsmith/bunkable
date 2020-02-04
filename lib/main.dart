@@ -8,6 +8,9 @@ void main() => runApp(
     home: TimeTable(
 
     ),
+    darkTheme: ThemeData(
+      brightness: Brightness.dark
+    ),
 
   ),
 );
@@ -27,13 +30,58 @@ class _TableTime extends State<TimeTable> {
 
   Widget buildText(int index,String period){
 
+    int st,end,sst,eend ;
+
+    if(index == 1){
+      st = 8 ;
+      end = 0 ;
+      sst = 8 ;
+      eend = 50 ;
+    }else if(index == 2){
+      st = 8 ;
+      end = 50 ;
+      sst = 9 ;
+      eend = 40 ;
+    }else if(index == 3){
+      st = 9 ;
+      end = 50 ;
+      sst = 10 ;
+      eend = 40 ;
+    }else if(index == 4){
+      st = 10 ;
+      end = 40 ;
+      sst = 11 ;
+      eend = 30 ;
+    }else if(index == 5){
+      st = 11 ;
+      end = 30 ;
+      sst = 12 ;
+      eend = 20 ;
+    }else if(index == 6){
+      st = 13 ;
+      end = 0 ;
+      sst = 13 ;
+      eend = 50 ;
+    }else if(index == 7){
+      st = 14 ;
+      end = 0 ;
+      sst = 14 ;
+      eend = 50 ;
+    }else if(index == 8){
+      st = 14 ;
+      end = 50 ;
+      sst = 15 ;
+      eend = 40 ;
+    }
+
     return Align(
       alignment: Alignment.topLeft,
       child: Padding(
         padding: const EdgeInsets.all(14.0),
         child: new Text(
           '$index. $period',
-          style: TextStyle(fontSize: 18.0,),
+          style: putColor(st,end,sst,eend) ? TextStyle(fontSize: 18.0,color: Color(0xff00818a)) : TextStyle(fontSize: 18.0,color: Color(0xff8cba51)),
+
         ),
       ),
     );
@@ -57,7 +105,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Monday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -84,7 +132,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Tuesday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -111,7 +159,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Wednesday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -138,7 +186,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Thursday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -165,7 +213,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Friday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -192,7 +240,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Saturday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -211,7 +259,7 @@ class _TableTime extends State<TimeTable> {
                 child: Text(
                   "Sunday",
                   textAlign: TextAlign.center,
-                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0),
+                  style: TextStyle(fontWeight: FontWeight.bold,fontSize: 30.0,color: Color(0xfff7e8f0)),
                 ),
               ),
             ),
@@ -230,18 +278,26 @@ class _TableTime extends State<TimeTable> {
     });
   }
 
+  bool putColor(int shr,int smin,int ehr,int emin){
+
+    DateTime dat = DateTime.now();
+    if(day == dat.weekday){
+      if((dat.hour == shr && dat.minute >= smin) || (dat.hour == ehr && dat.minute == emin))
+        return true;
+    }
+    return false;
+  }
+
   showAlertDialog(BuildContext context,String period,String path){
     return showDialog(context: context,builder: (context){
-      return Padding(
-        padding: const EdgeInsets.only(left: 2,right: 2,top: 0,bottom: 0),
-        child: AlertDialog(
-          title: Text("$period"),
-          content: PhotoView(
+      return Container(
+        width: MediaQuery.of(context).size.width,
+        height: MediaQuery.of(context).size.height,
+          child: PhotoView(
             imageProvider: AssetImage("$path"),
-            backgroundDecoration: BoxDecoration(color: Colors.cyanAccent),
+            backgroundDecoration: BoxDecoration(color: Colors.black54),
             ),
 
-        ),
       );
     }
     );
@@ -253,11 +309,13 @@ class _TableTime extends State<TimeTable> {
       child: Scaffold (
         appBar: AppBar(
           title: Text("Bunk Them All"),
+          backgroundColor: Color(0xff404b69),
         ),
         body: SlidingUpPanel(
             panel: Column(
               mainAxisSize: MainAxisSize.min,
               crossAxisAlignment: CrossAxisAlignment.start,
+
               children: <Widget>[
                 FlatButton.icon(
                     onPressed: (){
@@ -301,7 +359,7 @@ class _TableTime extends State<TimeTable> {
                       showAlertDialog(context,"Distributed Systems","assets/dsp.webp");
                     },
                     icon: Icon(Icons.reorder),
-                    label: Text("Distributed Systems")
+                    label: Text("Distributed Systems"),
                 ),
                 FlatButton.icon(
                     onPressed: (){
@@ -328,16 +386,12 @@ class _TableTime extends State<TimeTable> {
             ),
           body: table(),
           minHeight: 50,
+          color: Color(0xfffbbe1fa),
           borderRadius: BorderRadius.only(topLeft: Radius.circular(24),topRight: Radius.circular(24)),
           margin: const EdgeInsets.only(left: 30,right: 30,bottom: 5),
-          boxShadow: [
-            BoxShadow(
-              blurRadius: 20.0,
-              color: Colors.grey,
-            ),
-          ],
         ),
         bottomNavigationBar: BottomAppBar(
+          color: Color.fromARGB(12,12, 12,1),
           child: new Row(
             children: <Widget>[
               Container(
@@ -346,6 +400,7 @@ class _TableTime extends State<TimeTable> {
                     increase(1);
                   },
                   child: Text("Mon"),
+                  textColor: Colors.white,
                 ),
                 width: 70.0,
               ),
@@ -356,9 +411,11 @@ class _TableTime extends State<TimeTable> {
                   onPressed: (){
                     increase(2);
                   },
+                  textColor: Colors.white,
 
                 ),
                 width: 70,
+
               ),
               Container(
                 child: FlatButton(
@@ -367,7 +424,7 @@ class _TableTime extends State<TimeTable> {
                   onPressed: (){
                     increase(3);
                   },
-
+                  textColor: Colors.white,
                 ),
                 width: 70,
               ),
@@ -375,6 +432,7 @@ class _TableTime extends State<TimeTable> {
                 child: FlatButton(
 //                icon: Icon(Icons.airline_seat_flat),
                   child: Text("Thu"),
+                  textColor: Colors.white,
                   onPressed: (){
                     increase(4);
                   },
@@ -386,6 +444,7 @@ class _TableTime extends State<TimeTable> {
                 child: FlatButton(
 //                icon: Icon(Icons.airline_seat_flat),
                   child: Text("Fri"),
+                  textColor: Colors.white,
                   onPressed: (){
                     increase(5);
                   },
@@ -396,6 +455,7 @@ class _TableTime extends State<TimeTable> {
             ],
           ),
         ),
+        backgroundColor: Color(0xff283149),
       ),
     );
   }
